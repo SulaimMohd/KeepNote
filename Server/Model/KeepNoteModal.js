@@ -10,6 +10,9 @@ const keepNoteSchema  = mongoose.Schema({
   },
   color:{
     type:String
+  },
+  colorName:{
+    type:String
   }
 })
 

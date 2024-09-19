@@ -19,6 +19,7 @@ function NoteCard({ id, title, dsicr, color, colorName, handleDelete }) {
     console.log(id)
     axios.delete(`http://localhost:3000/deleteById/${id}`)
       .then(res => console.log(res))
+    handleDelete(id)
   }
   return (
 

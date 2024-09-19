@@ -7,18 +7,18 @@ function App() {
   const [allNotes, setAllNotes] = useState([])
   const navigate = useNavigate()
   const [colorName, setColorName] = useState('')
-  const [finding, setFinding] = useState(false)
-  const [filteredItems, setFilteredItems] = useState([])
   const [flag, setFlag] = useState(false)
+
   const handleSubmit = async(e)=>{
     e.preventDefault()
     console.log(colorName)
-    setFinding(true)
     await axios.get(`http://localhost:3000/fillteredNote/${colorName}`)
       .then(res => setAllNotes(res.data))
-    
+    }
+  const handleDelete = (id)=>{
+    const updateNotes = allNotes.filter(note => note._id !== id)
+    setAllNotes(updateNotes)
   }
-  
   useEffect(()=>{
     axios.get('http://localhost:3000/allNotes')
       .then((res)=> setAllNotes(res.data))
@@ -29,16 +29,7 @@ function App() {
     setFlag(pre => !pre)
   }
   console.log(allNotes)
-  if(finding){
-    filteredItems.length > 0 ? (filteredItems.map(note => (<NoteCard  
-      key={note.id} 
-      id={note._id} 
-      title={note.title} 
-      dsicr={note.discription} 
-      color={note.color} 
-      colorName={note.colorName}
-    />))):(<h1>Note found Item with color Name {colorName}</h1>)
-  }
+
   return ( 
     <div style={{ padding: '24px' }}> {/* Equivalent to p-6 */}
     <div 
@@ -126,12 +117,13 @@ function App() {
     >
       {allNotes.length > 0 ? allNotes.map(note => (
         <NoteCard  
-          key={note.id} 
+          key={note._id} 
           id={note._id} 
           title={note.title} 
           dsicr={note.discription} 
           color={note.color} 
           colorName={note.colorName}
+          handleDelete={handleDelete}
         />
       )) : (
         <h1 
